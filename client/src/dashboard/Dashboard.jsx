@@ -1,21 +1,16 @@
 import React from 'react';
-import Sidebar from '../sidebar/Sidebar';
-import Toolbar from '../toolbar/Toolbar';
-import Footer from '../footer/Footer';
 import { AuthContext } from '../auth/AuthService';
-import { Navigate, redirect, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { UploadDroppable } from '../ui-components/UploadDroppable';
 
 export const Dashboard = () => {
   const auth = React.useContext(AuthContext);
 
+  React.useEffect(() => {}, [auth.getUserData()]);
+
   return auth.isLoggedIn() ? (
     <>
-      <Sidebar />
-      <div id="right-wrapper">
-        <Toolbar />
-        <div id="content-wrapper"></div>
-        <Footer />
-      </div>
+      <UploadDroppable />
     </>
   ) : (
     <>

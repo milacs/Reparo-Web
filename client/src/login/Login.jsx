@@ -4,44 +4,21 @@ import { GoogleLogin } from '@react-oauth/google';
 import { Navigate } from 'react-router-dom';
 
 import { AuthContext } from '../auth/AuthService';
+import Footer from '../footer/Footer';
+import Toolbar from '../toolbar/Toolbar';
 
 export const Login = () => {
   const auth = React.useContext(AuthContext);
 
-  // React.useEffect(() => {
-  //   if (auth.isLoggedIn()) {
-  //     axios
-  //       .get(
-  //         `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${
-  //           auth.getUserData().credential
-  //         }`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${auth.getUserData().credential}`,
-  //             Accept: 'application/json',
-  //           },
-  //         },
-  //       )
-  //       .then((response) => {
-  //         auth.setProfileData(response.data);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [auth.getUserData()]);
-
-  // const login = useGoogleLogin({
-  //   onSuccess: (codeResponse) => auth.setUserData(codeResponse),
-  //   onError: (error) => alert('Login Failed:', error),
-  // });
-
-  return (
-    <div id="login">
-      <h2>Reparo Web</h2>
-      <br />
-      <br />
-      {auth.isLoggedIn() ? (
-        <Navigate to="/dashboard" />
-      ) : (
+  return auth.isLoggedIn() ? (
+    <Navigate to="/dashboard" />
+  ) : (
+    <>
+      <div
+        id="login"
+        className="flex flex-col justify-start content-center flex-wrap rounded-md border w-96 bg-white px-16 py-12 h-fit mt-40"
+      >
+        <h1 className="text-center text-xl pb-2 mb-4">Fazer login</h1>
         <GoogleLogin
           onSuccess={(credentialResponse) => {
             auth.setUserData(credentialResponse.credential);
@@ -51,7 +28,7 @@ export const Login = () => {
           }}
           useOneTap
         />
-      )}
-    </div>
+      </div>
+    </>
   );
 };

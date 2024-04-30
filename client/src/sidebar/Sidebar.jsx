@@ -1,16 +1,8 @@
 import React from 'react';
-import './sidebar.scss';
-import Logo from '../assets/logo.svg';
+import Logo from '../assets/images/logo.svg';
 
 const Sidebar = () => {
-  return (
-    <div id="sidebar">
-      <div id="logo">
-        <img src={Logo} />
-        <span>Reparo Web</span>
-      </div>
-    </div>
-  );
+  return <div id="sidebar" className="grow-[0.15] p-4"></div>;
 };
 
 export default Sidebar;

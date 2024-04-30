@@ -4,11 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
-var testAPIRouter = require('./routes/testAPI');
+var uploadRouter = require('./routes/upload');
 
 var app = express();
+
+//ADD BODY-PARSER CODE
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+const corsOrigin = 'http://localhost:5173';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,10 +26,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('cors');
+app.use(
+  cors({ origin: [corsOrigin], methods: ['GET', 'POST'], credentials: true }),
+);
 
 app.use('/', indexRouter);
-app.use('/testAPI', testAPIRouter);
+app.use('/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -33,7 +42,10 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = err;
+
+  console.log('Error: ' + err);
 
   // render the error page
   res.status(err.status || 500);

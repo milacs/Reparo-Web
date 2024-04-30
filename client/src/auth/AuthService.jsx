@@ -13,10 +13,6 @@ export const AuthStorage = ({ children }) => {
     if (localUser) setUser(jwtDecode(localUser));
   }, []);
 
-  // React.useEffect(() => {
-  //   if (user) window.localStorage.setItem('user', JSON.stringify(user));
-  // }, [user]);
-
   const isLoggedIn = () => {
     return user !== null;
   };
