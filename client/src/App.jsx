@@ -16,7 +16,7 @@ function App() {
         <Toolbar />
         <div
           id="content-wrapper"
-          className="container flex flex-column justify-center flex-wrap max-w-none w-full h-full bg-gray-100 p-4"
+          className="container max-w-none w-full h-full p-4 overflow-hidden"
         >
           <BrowserRouter>
             <Routes>

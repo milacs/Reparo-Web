@@ -8,7 +8,7 @@ export const UserInfo = ({ src, name }) => {
         referrerPolicy="no-referrer"
         className="rounded-full me-2 border shadow"
       />
-      <span className="ms-2 my-auto">{name}</span>
+      <span className="my-auto text-sm">{name}</span>
     </div>
   );
 };

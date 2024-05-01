@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var uploadRouter = require('./routes/upload');
+var imagesRouter = require('./routes/images');
+var getThumbnail = require('./routes/thumbnail');
 
 var app = express();
 
@@ -32,6 +34,8 @@ app.use(
 
 app.use('/', indexRouter);
 app.use('/upload', uploadRouter);
+app.use('/images', imagesRouter);
+app.use('/thumbnail', getThumbnail);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -42,8 +46,8 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  // res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.locals.error = err;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // res.locals.error = err;
 
   console.log('Error: ' + err);
 

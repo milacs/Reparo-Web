@@ -1,10 +1,8 @@
-import axios from 'axios';
 import React from 'react';
+import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
-import { ImgButton } from './ImgButton';
-import Upload from '../assets/images/upload.svg';
 
-export const UploadDroppable = () => {
+export const DropzoneWithPreview = ({ callback }) => {
   const [image, setImage] = React.useState(null);
   const [preview, setPreview] = React.useState(null);
   const fileInput = React.useRef();
@@ -20,44 +18,32 @@ export const UploadDroppable = () => {
 
     const file = new FileReader();
     file.onload = function () {
+      console.log('Accepted file: ' + JSON.stringify(file.result));
       setPreview(file.result);
     };
 
+    console.log('Accepted file: ' + JSON.stringify(acceptedFiles[0]));
     file.readAsDataURL(acceptedFiles[0]);
   }, []);
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
-  const handleUpload = () => {
-    if (image === null) {
-      alert('Invalid file!');
-      setImage(null);
-      return;
-    }
-
-    axios
-      .post('http://localhost:3000/upload', image)
-      .then((res) => {
-        console.log('Axios response: ', res);
-        alert('Uploaded successfully!');
-      })
-      .catch((err) => {
-        console.log('Error: ' + err);
-      })
-      .finally(() => {
-        setImage(null);
-      });
-  };
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: onDrop,
+    accept: {
+      'image/tiff': ['.tiff', '.tif'],
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpg', '.jpeg'],
+    },
+  });
 
   return (
-    <div className="flex flex-row justify-center flex-wrap content-center w-fit  h-fit">
-      <div className="flex items-center justify-center w-full">
+    <div className="flex flex-row content-center justify-around h-fit mb-10 mx-10">
+      <div className="flex items-center justify-center aspect-square">
         <div {...getRootProps()}>
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
+            className="flex flex-col grow items-center justify-center w-auto h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
           >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+            <div className="flex flex-col grow items-center justify-center py-5 px-10">
               <svg
                 className="w-8 h-8 mb-4 text-gray-500"
                 aria-hidden="true"
@@ -74,24 +60,29 @@ export const UploadDroppable = () => {
                 />
               </svg>
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
+                <span className="font-semibold">Clique para fazer upload</span>{' '}
+                ou arraste e solte-os aqui
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                SVG, PNG, JPG or GIF (MAX. 800x400px)
+                Arquivos TIFF
               </p>
             </div>
             <input ref={fileInput} {...getInputProps()} />
           </label>
         </div>
       </div>
-      <ImgButton
-        className=""
-        src={Upload}
-        alt="Upload"
-        onClick={handleUpload}
-      />
-      <img className="w-40" src={preview} />
+      <span className="material-symbols-outlined my-auto mx-4 icon-36 text-gray-500">
+        chevron_right
+      </span>
+      <div className="min-w-[400px] max-w-[400px] rounded aspect-square flex flex-column justify-center content-center bg-gray-50 outline outline-1 outline-gray-400">
+        {preview ? (
+          <img className="object-scale-down object-center" src={preview} />
+        ) : (
+          <span className="material-symbols-outlined m-auto text-gray-500 icon-64">
+            preview
+          </span>
+        )}
+      </div>
     </div>
   );
 };
