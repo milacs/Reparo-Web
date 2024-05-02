@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "src": "/[^.]+",
+      "dest": "https://reparo-web-sever.vercel.app/",
+      "status": 200
+    }
+  ]
+}
