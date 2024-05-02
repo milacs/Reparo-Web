@@ -4,7 +4,7 @@ const imageThumbnail = require('image-thumbnail');
 
 var router = express.Router();
 
-const path = process.env.FILES_PATH;
+const path = '/tmp/data/';
 
 const getThumbnail = async function (file) {
   try {

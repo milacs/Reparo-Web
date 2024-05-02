@@ -68,7 +68,7 @@ export const Dashboard = () => {
 
   return auth.isLoggedIn() ? (
     <>
-      <Dialog open={open} handler={handleOpen} size="xl">
+      <Dialog id="preview-modal" open={open} handler={handleOpen} size="xl">
         <DialogHeader className="flex flex-row justify-between content-center">
           Preview
           <IconButton
@@ -80,18 +80,19 @@ export const Dashboard = () => {
           </IconButton>
         </DialogHeader>
         <DialogBody className="flex flex-row justify-center content-center">
-          <TransformWrapper>
-            <TransformComponent>
-              <TIFFViewer
-                tiff={previewImage}
-                lang="en" // en | de | fr | es | tr | ja | zh | ru | ar | hi
-                paginate="ltr" // bottom | ltr
-                className=""
-              />
-            </TransformComponent>
-          </TransformWrapper>
+          {previewImage && (
+            <TransformWrapper>
+              <TransformComponent>
+                <TIFFViewer
+                  tiff={previewImage}
+                  lang="en" // en | de | fr | es | tr | ja | zh | ru | ar | hi
+                  paginate="ltr" // bottom | ltr
+                  className=""
+                />
+              </TransformComponent>
+            </TransformWrapper>
+          )}
         </DialogBody>
-        <DialogFooter></DialogFooter>
       </Dialog>
       {images && images.length ? (
         <>

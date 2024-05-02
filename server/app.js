@@ -1,12 +1,21 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 var bodyParser = require('body-parser');
 
 require('dotenv').config();
+
+fs.mkdir('/tmp/data/', { recursive: true }, (err) => {
+  if (err) {
+    return console.error(err);
+  }
+  console.log('Directory created successfully!');
+});
+
 var app = express();
 
 var indexRouter = require('./routes/index');

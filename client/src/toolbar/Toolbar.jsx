@@ -84,7 +84,12 @@ const Toolbar = () => {
             <span className="material-symbols-outlined">cloud_upload</span>
             <span>Upload imagem</span>
           </Button>
-          <Dialog open={open} handler={handleOpen} size="xl">
+          <Dialog
+            id="dropzone-modal"
+            open={open}
+            handler={handleOpen}
+            size="xl"
+          >
             <DialogHeader className="flex flex-row justify-between content-center">
               Upload imagem
               <IconButton

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { TIFFViewer } from 'react-tiff';
 
 import Loading from '../assets/images/loading.gif';
@@ -19,7 +20,6 @@ export const DropzoneWithPreview = ({ callback }) => {
 
     const file = new FileReader();
     file.onload = function () {
-      console.info('Dropped image: ' + file.result);
       setPreview(file.result);
     };
     file.readAsDataURL(acceptedFiles[0]);
@@ -71,7 +71,7 @@ export const DropzoneWithPreview = ({ callback }) => {
       <span className="material-symbols-outlined my-auto mx-4 icon-36 text-gray-500">
         chevron_right
       </span>
-      <div className="min-w-[400px] max-w-[400px] rounded aspect-square flex flex-column justify-center content-center bg-gray-50 outline outline-1 outline-gray-400">
+      <div className="min-w-[400px] max-w-[400px] rounded aspect-square flex flex-column justify-center content-center items-center bg-gray-50 outline outline-1 outline-gray-400">
         {preview ? (
           // <img className="object-scale-down object-center" src={preview} />
           <>
@@ -79,11 +79,15 @@ export const DropzoneWithPreview = ({ callback }) => {
               className="size-10 m-auto -z-[1] fixed top-[50%]"
               src={Loading}
             />
-            <TIFFViewer
-              tiff={preview}
-              lang="en" // en | de | fr | es | tr | ja | zh | ru | ar | hi
-              paginate="ltr" // bottom | ltr
-            />
+            <TransformWrapper>
+              <TransformComponent>
+                <TIFFViewer
+                  tiff={preview}
+                  lang="en" // en | de | fr | es | tr | ja | zh | ru | ar | hi
+                  paginate="ltr" // bottom | ltr
+                />
+              </TransformComponent>
+            </TransformWrapper>
           </>
         ) : (
           <span className="material-symbols-outlined m-auto text-gray-500 icon-64">
