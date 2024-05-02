@@ -6,12 +6,14 @@ var logger = require('morgan');
 var cors = require('cors');
 var bodyParser = require('body-parser');
 
+require('dotenv').config();
+var app = express();
+
 var indexRouter = require('./routes/index');
 var uploadRouter = require('./routes/upload');
 var imagesRouter = require('./routes/images');
 var getThumbnail = require('./routes/thumbnail');
-
-var app = express();
+var imageRouter = require('./routes/image');
 
 //ADD BODY-PARSER CODE
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,6 +38,7 @@ app.use('/', indexRouter);
 app.use('/upload', uploadRouter);
 app.use('/images', imagesRouter);
 app.use('/thumbnail', getThumbnail);
+app.use('/image', imageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

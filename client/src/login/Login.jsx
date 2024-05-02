@@ -16,7 +16,7 @@ export const Login = () => {
     <>
       <div
         id="login"
-        className="flex flex-col justify-start content-center flex-wrap rounded-md border w-96 bg-white px-16 py-12 h-fit mt-40"
+        className="flex flex-col justify-start content-center flex-wrap rounded-md border w-96 bg-white px-16 py-12 h-fit mt-40 mx-auto"
       >
         <h1 className="text-center text-xl pb-2 mb-4">Fazer login</h1>
         <GoogleLogin
@@ -24,7 +24,7 @@ export const Login = () => {
             auth.setUserData(credentialResponse.credential);
           }}
           onError={() => {
-            console.log('Login Failed');
+            console.error('Login Failed');
           }}
           useOneTap
         />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { googleLogout } from '@react-oauth/google';
 import { redirect } from 'react-router-dom';
+import axios from 'axios';
 import {
   Button,
   Dialog,
@@ -11,13 +12,17 @@ import {
 } from '@material-tailwind/react';
 
 import { AuthContext } from '../auth/AuthService';
+import { UploadContext } from '../upload/UploadService';
 import { UserInfo } from './UserInfo';
-import { DropzoneWithPreview } from '../ui-components/DropzoneWithPreview';
+import { DropzoneWithPreview } from '../upload/DropzoneWithPreview';
 
 import Logo from '../assets/images/logo.svg';
 
 const Toolbar = () => {
   const auth = React.useContext(AuthContext);
+  const upld = React.useContext(UploadContext);
+
+  const [loading, setLoading] = React.useState(false);
 
   const logout = () => {
     googleLogout();
@@ -27,7 +32,34 @@ const Toolbar = () => {
 
   const [open, setOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    upld.setImage(null);
+  }, [open]);
+
   const handleOpen = () => setOpen(!open);
+
+  const handleUpload = () => {
+    if (upld.image === null) {
+      alert('Invalid file!');
+      upld.setImage(null);
+      return;
+    }
+
+    setLoading(true);
+    axios
+      .post('/upload', upld.image)
+      .then((res) => {
+        console.info('Axios response: ', res);
+        setOpen(false);
+      })
+      .catch((err) => {
+        console.error('Error: ' + err);
+      })
+      .finally(() => {
+        upld.setImage(null);
+        setLoading(false);
+      });
+  };
 
   return (
     <div
@@ -47,7 +79,7 @@ const Toolbar = () => {
           <Button
             onClick={handleOpen}
             variant="text"
-            className="flex items-center gap-3 font-normal text-grey-900 material-button"
+            className="flex items-center gap-3 font-normal text-gray-900 material-button"
           >
             <span className="material-symbols-outlined">cloud_upload</span>
             <span>Upload imagem</span>
@@ -64,8 +96,20 @@ const Toolbar = () => {
               </IconButton>
             </DialogHeader>
             <DialogBody>
-              <DropzoneWithPreview />
+              <DropzoneWithPreview callback={upld.setImage} />
             </DialogBody>
+            <DialogFooter>
+              <Button
+                variant="outlined"
+                color="gray"
+                className=""
+                loading={loading}
+                onClick={handleUpload}
+                disabled={upld.image === null}
+              >
+                Upload
+              </Button>
+            </DialogFooter>
           </Dialog>
           <UserInfo src={auth.getUserPicture()} name={auth.getUserName()} />
           <IconButton

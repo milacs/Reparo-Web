@@ -3,7 +3,7 @@ const fs = require('fs');
 
 var router = express.Router();
 
-const path = './uploads/';
+const path = process.env.FILES_PATH;
 
 /* GET list of files. */
 router.get('/', function (req, res, next) {

@@ -1,9 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
+import { TIFFViewer } from 'react-tiff';
+
+import Loading from '../assets/images/loading.gif';
 
 export const DropzoneWithPreview = ({ callback }) => {
-  const [image, setImage] = React.useState(null);
   const [preview, setPreview] = React.useState(null);
   const fileInput = React.useRef();
 
@@ -14,15 +15,13 @@ export const DropzoneWithPreview = ({ callback }) => {
     }
     const formData = new FormData();
     formData.append('image-file', acceptedFiles[0], acceptedFiles[0].name);
-    setImage(formData);
+    callback(formData);
 
     const file = new FileReader();
     file.onload = function () {
-      console.log('Accepted file: ' + JSON.stringify(file.result));
+      console.info('Dropped image: ' + file.result);
       setPreview(file.result);
     };
-
-    console.log('Accepted file: ' + JSON.stringify(acceptedFiles[0]));
     file.readAsDataURL(acceptedFiles[0]);
   }, []);
 
@@ -30,8 +29,6 @@ export const DropzoneWithPreview = ({ callback }) => {
     onDrop: onDrop,
     accept: {
       'image/tiff': ['.tiff', '.tif'],
-      'image/png': ['.png'],
-      'image/jpeg': ['.jpg', '.jpeg'],
     },
   });
 
@@ -76,7 +73,18 @@ export const DropzoneWithPreview = ({ callback }) => {
       </span>
       <div className="min-w-[400px] max-w-[400px] rounded aspect-square flex flex-column justify-center content-center bg-gray-50 outline outline-1 outline-gray-400">
         {preview ? (
-          <img className="object-scale-down object-center" src={preview} />
+          // <img className="object-scale-down object-center" src={preview} />
+          <>
+            <img
+              className="size-10 m-auto -z-[1] fixed top-[50%]"
+              src={Loading}
+            />
+            <TIFFViewer
+              tiff={preview}
+              lang="en" // en | de | fr | es | tr | ja | zh | ru | ar | hi
+              paginate="ltr" // bottom | ltr
+            />
+          </>
         ) : (
           <span className="material-symbols-outlined m-auto text-gray-500 icon-64">
             preview

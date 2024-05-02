@@ -46,3 +46,12 @@ body {
   width: 24px;
   height: 24px;
 }
+
+#tiff-container canvas {
+  min-width: 600px;
+  max-width: 800px;
+}
+
+#tiff-container {
+  margin: auto;
+}
