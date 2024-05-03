@@ -1,12 +1,12 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { TIFFViewer } from 'react-tiff';
-
-import Loading from '../assets/images/loading.gif';
+import { IconButton } from '@material-tailwind/react';
+import { PreviewWithZoom } from '../dashboard/PreviewWithZoom';
 
 export const DropzoneWithPreview = ({ callback }) => {
   const [preview, setPreview] = React.useState(null);
+  const [files, setFiles] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
   const fileInput = React.useRef();
 
   const onDrop = React.useCallback((acceptedFiles) => {
@@ -15,14 +15,12 @@ export const DropzoneWithPreview = ({ callback }) => {
       return;
     }
     const formData = new FormData();
-    formData.append('image-file', acceptedFiles[0], acceptedFiles[0].name);
+    console.log('LIST OF FILES: ', acceptedFiles);
+    acceptedFiles.forEach((file, i) => {
+      formData.append('image-files', file, file.name);
+    });
     callback(formData);
-
-    const file = new FileReader();
-    file.onload = function () {
-      setPreview(file.result);
-    };
-    file.readAsDataURL(acceptedFiles[0]);
+    setFiles(acceptedFiles);
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -32,13 +30,28 @@ export const DropzoneWithPreview = ({ callback }) => {
     },
   });
 
+  const handleOpen = () => setOpen(!open);
+
+  const openPreview = (file) => {
+    const fileb64 = new FileReader();
+    fileb64.onload = function () {
+      setPreview(fileb64.result);
+      handleOpen();
+    };
+    fileb64.readAsDataURL(file);
+  };
+
+  const removeFile = (fileName) => {
+    setFiles(files.filter((f) => f.name !== fileName));
+  };
+
   return (
-    <div className="flex flex-row content-center justify-around h-fit mb-10 mx-10">
+    <div className="flex flex-row content-center justify-around h-fit">
       <div className="flex items-center justify-center aspect-square">
         <div {...getRootProps()}>
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col grow items-center justify-center w-auto h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
+            className="flex flex-col grow items-center justify-center w-auto h-[400px] border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
           >
             <div className="flex flex-col grow items-center justify-center py-5 px-10">
               <svg
@@ -64,37 +77,43 @@ export const DropzoneWithPreview = ({ callback }) => {
                 Arquivos TIFF
               </p>
             </div>
-            <input ref={fileInput} {...getInputProps()} />
+            <input ref={fileInput} {...getInputProps()} multiple />
           </label>
         </div>
       </div>
-      <span className="material-symbols-outlined my-auto mx-4 icon-36 text-gray-500">
-        chevron_right
-      </span>
-      <div className="min-w-[400px] max-w-[400px] rounded aspect-square flex flex-column justify-center content-center items-center bg-gray-50 outline outline-1 outline-gray-400">
-        {preview ? (
-          // <img className="object-scale-down object-center" src={preview} />
-          <>
-            <img
-              className="size-10 m-auto -z-[1] fixed top-[50%]"
-              src={Loading}
-            />
-            <TransformWrapper>
-              <TransformComponent>
-                <TIFFViewer
-                  tiff={preview}
-                  lang="en" // en | de | fr | es | tr | ja | zh | ru | ar | hi
-                  paginate="ltr" // bottom | ltr
-                />
-              </TransformComponent>
-            </TransformWrapper>
-          </>
-        ) : (
-          <span className="material-symbols-outlined m-auto text-gray-500 icon-64">
-            preview
-          </span>
-        )}
-      </div>
+
+      {files.length > 0 && (
+        <div className="flex flex-col p-0">
+          {files.map((file, i) => (
+            <div
+              key={i}
+              className="bg-gray-50 px-4 py-4 mb-4 rounded-md outline outline-1 outline-gray-200 w-80 flex flex-row justify-between content-center items-center"
+            >
+              <div>
+                <span className="text-gray-900">{file.name}</span>
+                <span> - </span>
+                <span>{file.type}</span>
+              </div>
+              <div className="flex flex-row justify-center content-center">
+                <IconButton variant="text" onClick={() => openPreview(file)}>
+                  <span className="material-symbols-outlined">preview</span>
+                </IconButton>
+                <IconButton
+                  variant="text"
+                  onClick={() => removeFile(file.name)}
+                >
+                  <span className="material-symbols-outlined">close</span>
+                </IconButton>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      <PreviewWithZoom
+        open={open}
+        handleOpen={handleOpen}
+        previewImage={preview}
+      />
     </div>
   );
 };

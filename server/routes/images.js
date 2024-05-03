@@ -3,7 +3,7 @@ const fs = require('fs');
 
 var router = express.Router();
 
-const path = '/tmp/data/';
+const path = './uploads/';
 
 /* GET list of files. */
 router.get('/', function (req, res, next) {

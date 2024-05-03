@@ -4,7 +4,7 @@ const imageThumbnail = require('image-thumbnail');
 
 var router = express.Router();
 
-const path = '/tmp/data/';
+const path = './uploads/';
 
 /* GET list of files. */
 router.get('/:imageName', function (req, res, next) {

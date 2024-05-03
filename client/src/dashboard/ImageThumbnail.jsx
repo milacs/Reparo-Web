@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Loading from '../assets/images/loading.gif';
 
-export const ImageThumbnail = ({ id, imageName, onClick }) => {
+export const ImageThumbnail = ({ id, imageName, onClick, loading }) => {
   const [thumb, setThumb] = React.useState(null);
 
   const loadThumbnail = (imageName) => {
@@ -25,7 +25,7 @@ export const ImageThumbnail = ({ id, imageName, onClick }) => {
     <button
       key={id}
       onClick={() => onClick(imageName)}
-      disabled={!thumb}
+      disabled={!thumb || loading}
       className="flex flex-col justify-center content-center"
     >
       <div className="w-40 h-40 mx-auto mb-2 outline outline-1 outline-gray-300 flex bg-white rounded justify-center content-center flex-wrap align">

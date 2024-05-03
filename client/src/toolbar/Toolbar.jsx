@@ -23,14 +23,13 @@ const Toolbar = () => {
   const upld = React.useContext(UploadContext);
 
   const [loading, setLoading] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const logout = () => {
     googleLogout();
     auth.clearUserData();
     redirect('/login');
   };
-
-  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     upld.setImage(null);

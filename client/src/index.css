@@ -49,12 +49,7 @@ body {
 
 #preview-modal #tiff-container canvas {
   min-width: 600px;
-  max-width: 800px;
-}
-
-#dropzone-modal #tiff-container canvas {
-  min-width: 300px;
-  max-width: 400px;
+  max-width: 80vh;
 }
 
 #tiff-container {

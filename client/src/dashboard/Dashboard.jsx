@@ -1,28 +1,18 @@
 import React from 'react';
 import axios from 'axios';
 
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { TIFFViewer } from 'react-tiff';
-import {
-  Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  IconButton,
-} from '@material-tailwind/react';
-
 import { AuthContext } from '../auth/AuthService';
 import { Navigate } from 'react-router-dom';
 import { ImageThumbnail } from './ImageThumbnail';
 import { UploadContext } from '../upload/UploadService';
+import { PreviewWithZoom } from './PreviewWithZoom';
 
 export const Dashboard = () => {
   const auth = React.useContext(AuthContext);
   const upld = React.useContext(UploadContext);
   const [images, setImages] = React.useState(null);
   const [open, setOpen] = React.useState(false);
-  const [previewImage, setPreviewImage] = React.useState(false);
+  const [previewImage, setPreviewImage] = React.useState(null);
 
   React.useEffect(() => {
     if (auth.isLoggedIn() && upld.image === null) {
@@ -68,41 +58,21 @@ export const Dashboard = () => {
 
   return auth.isLoggedIn() ? (
     <>
-      <Dialog id="preview-modal" open={open} handler={handleOpen} size="xl">
-        <DialogHeader className="flex flex-row justify-between content-center">
-          Preview
-          <IconButton
-            variant="text"
-            className="rounded-full flex material-icon-button"
-            onClick={handleOpen}
-          >
-            <span className="material-symbols-outlined">close</span>
-          </IconButton>
-        </DialogHeader>
-        <DialogBody className="flex flex-row justify-center content-center">
-          {previewImage && (
-            <TransformWrapper>
-              <TransformComponent>
-                <TIFFViewer
-                  tiff={previewImage}
-                  lang="en" // en | de | fr | es | tr | ja | zh | ru | ar | hi
-                  paginate="ltr" // bottom | ltr
-                  className=""
-                />
-              </TransformComponent>
-            </TransformWrapper>
-          )}
-        </DialogBody>
-      </Dialog>
+      <PreviewWithZoom
+        open={open}
+        handleOpen={handleOpen}
+        previewImage={previewImage}
+      />
       {images && images.length ? (
         <>
           <h1 className="text-center mb-4 text-lg mt-8">Imagens de reparos</h1>
-          <div className="flex gap-10 bg-gray-100 p-4 m-0 flex-wrap overflow-y-auto h-80 rounded">
+          <div className="flex gap-8 bg-gray-100 p-4 m-0 flex-wrap overflow-y-auto h-[75vh] rounded justify-start content-start">
             {images.map((image, key) => (
               <ImageThumbnail
                 key={key}
                 imageName={image}
                 onClick={handleOpen}
+                loading={previewImage !== null}
               />
             ))}
           </div>

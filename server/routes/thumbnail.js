@@ -4,7 +4,7 @@ const imageThumbnail = require('image-thumbnail');
 
 var router = express.Router();
 
-const path = '/tmp/data/';
+const path = './uploads/';
 
 const getThumbnail = async function (file) {
   try {
@@ -18,7 +18,6 @@ const getThumbnail = async function (file) {
         fit: 'inside',
       },
     )}`;
-    // console.log('Thumbnail: ' + thumbnail);
     return thumbnail;
   } catch (err) {
     console.error(err);
