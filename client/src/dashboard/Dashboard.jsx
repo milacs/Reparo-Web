@@ -6,6 +6,8 @@ import { Navigate } from 'react-router-dom';
 import { ImageThumbnail } from './ImageThumbnail';
 import { UploadContext } from '../upload/UploadService';
 import { PreviewWithZoom } from './PreviewWithZoom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Dashboard = () => {
   const auth = React.useContext(AuthContext);
@@ -48,12 +50,17 @@ export const Dashboard = () => {
   const handleOpen = async (imageName) => {
     if (!open) {
       console.info('Preview image name: ' + imageName);
+      toast('Loading image preview...');
       const image = await getOriginalImage(imageName);
-      setPreviewImage(image);
+      const timeout = setTimeout(() => {
+        setPreviewImage(image);
+        setOpen(true);
+        clearTimeout(timeout);
+      }, 300);
     } else {
       setPreviewImage(null);
+      setOpen(false);
     }
-    setOpen(!open);
   };
 
   return auth.isLoggedIn() ? (
@@ -76,6 +83,16 @@ export const Dashboard = () => {
               />
             ))}
           </div>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={2000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            rtl={false}
+            pauseOnHover
+            theme="light"
+            transition:Flip
+          />
         </>
       ) : (
         <>
