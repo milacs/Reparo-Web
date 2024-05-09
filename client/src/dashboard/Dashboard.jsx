@@ -1,14 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 
-import { AuthContext } from '../auth/AuthService';
 import { Navigate } from 'react-router-dom';
-import { ImageThumbnail } from './ImageThumbnail';
-import { UploadContext } from '../upload/UploadService';
-import { PreviewWithZoom } from './PreviewWithZoom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IconButton, Button } from '@material-tailwind/react';
+
+import { AuthContext } from '../auth/AuthService';
+import { ImageThumbnail } from './ImageThumbnail';
+import { UploadContext } from '../upload/UploadService';
+import { PreviewWithZoom } from './PreviewWithZoom';
+import Translator from '../i18n/Translator';
 
 export const Dashboard = () => {
   const auth = React.useContext(AuthContext);
@@ -54,7 +56,7 @@ export const Dashboard = () => {
   const handleOpen = async (imageName) => {
     if (!open) {
       console.info('Preview image name: ' + imageName);
-      toast('Loading image preview...');
+      toast(<Translator path="preview.toast" />);
       const image = await getOriginalImage(imageName);
       const timeout = setTimeout(() => {
         setPreview({ b64: image, name: imageName });
@@ -82,8 +84,10 @@ export const Dashboard = () => {
       <PreviewWithZoom open={open} handleOpen={handleOpen} preview={preview} />
       {images && images.length ? (
         <>
-          <h1 className="text-center mb-4 text-lg mt-8">Imagens de reparos</h1>
-          <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-flow-row grid-rows-auto gap-8 bg-gray-100 p-4 m-0 overflow-y-auto h-[70vh] rounded">
+          <h1 className="text-center mb-4 text-lg mt-8">
+            <Translator path="dashboard.title" />
+          </h1>
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-flow-row grid-rows-auto gap-8 bg-gray-100 p-4 m-0 overflow-y-auto h-[75%] rounded">
             {images.map((image) => (
               <ImageThumbnail
                 key={image}
@@ -138,7 +142,9 @@ export const Dashboard = () => {
         </>
       ) : (
         <>
-          <p className="text-center my-40">Nenhuma imagem ainda :(</p>
+          <p className="text-center my-40">
+            <Translator path="dashboard.empty" />
+          </p>
         </>
       )}
     </>

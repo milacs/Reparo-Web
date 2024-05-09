@@ -1,8 +1,6 @@
 import React from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { TIFFViewer } from 'react-tiff';
-import { DICOMViewer } from './DICOMViewer';
-import { isDCM } from '../helpers/Helpers';
 import {
   Dialog,
   DialogHeader,
@@ -10,11 +8,15 @@ import {
   IconButton,
 } from '@material-tailwind/react';
 
+import { DICOMViewer } from './DICOMViewer';
+import { isDCM } from '../helpers/Helpers';
+import Translator from '../i18n/Translator';
+
 export const PreviewWithZoom = ({ open, handleOpen, preview }) => {
   return (
     <Dialog id="preview-modal" open={open} handler={handleOpen} size="xl">
       <DialogHeader className="flex flex-row justify-between content-center">
-        Preview
+        <Translator path="preview.title" />
         <IconButton
           variant="text"
           className="rounded-full flex material-icon-button"

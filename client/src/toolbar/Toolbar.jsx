@@ -15,6 +15,7 @@ import { AuthContext } from '../auth/AuthService';
 import { UploadContext } from '../upload/UploadService';
 import { UserInfo } from './UserInfo';
 import { DropzoneWithPreview } from '../upload/DropzoneWithPreview';
+import Translator from '../i18n/Translator';
 
 import Logo from '../assets/images/logo.svg';
 
@@ -65,7 +66,7 @@ const Toolbar = () => {
       id="toolbar"
       className="
       container flex flex-row justify-between align-middle
-      h-14 w-full max-w-none
+      h-[7.5vh] w-full max-w-none
       px-4 py-2
       bg-white shadow"
     >
@@ -81,7 +82,9 @@ const Toolbar = () => {
             className="flex items-center gap-3 font-normal text-gray-900 material-button"
           >
             <span className="material-symbols-outlined">cloud_upload</span>
-            <span>Upload imagem</span>
+            <span>
+              <Translator path="upload.action" />
+            </span>
           </Button>
           <Dialog
             id="dropzone-modal"
@@ -90,7 +93,7 @@ const Toolbar = () => {
             size="xl"
           >
             <DialogHeader className="flex flex-row justify-between content-center">
-              Upload imagem
+              <Translator path="upload.action" />
               <IconButton
                 variant="text"
                 className="rounded-full flex material-icon-button"
@@ -111,7 +114,7 @@ const Toolbar = () => {
                 onClick={handleUpload}
                 disabled={upld.image === null}
               >
-                Upload
+                <Translator path="upload.button" />
               </Button>
             </DialogFooter>
           </Dialog>
