@@ -2,7 +2,7 @@ export default {
   i18n: {
     language: {
       'pt-BR': 'Portuguese (Brazil)',
-      'en-US': 'English (USA))',
+      'en-US': 'English (USA)',
     },
     login: { title: 'Login' },
     upload: {
@@ -22,7 +22,8 @@ export default {
     },
     preview: {
       title: 'Preview',
-      toast: 'Loading image for preview...',
+      loadingToast: 'Loading image for preview...',
+      zoomToast: 'Scroll to zoom and drag to pan',
     },
   },
 };

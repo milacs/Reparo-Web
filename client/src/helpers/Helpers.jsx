@@ -1,4 +1,9 @@
-const fileTypes = { dcm: 'DICOM/DICONDE' };
+const filesDict = { tiff: 'TIFF', dicom: 'DICOM/DICONDE' };
+const fileTypes = {
+  dcm: filesDict.dicom,
+  tif: filesDict.tiff,
+  tiff: filesDict.tiff,
+};
 
 export const shortenFileName = (fileName, maxLength, includeIdx) => {
   if (maxLength === undefined) maxLength = 40;

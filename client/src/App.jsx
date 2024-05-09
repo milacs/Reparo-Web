@@ -18,7 +18,7 @@ function App() {
           <Toolbar />
           <div
             id="content-wrapper"
-            className="container max-w-none w-full h-[85.5vh] p-4 overflow-hidden"
+            className="container max-w-none w-full h-[84.5vh] p-4 overflow-hidden"
           >
             <BrowserRouter>
               <Routes>

@@ -56,7 +56,7 @@ export const Dashboard = () => {
   const handleOpen = async (imageName) => {
     if (!open) {
       console.info('Preview image name: ' + imageName);
-      toast(<Translator path="preview.toast" />);
+      toast(<Translator path="preview.loadingToast" />);
       const image = await getOriginalImage(imageName);
       const timeout = setTimeout(() => {
         setPreview({ b64: image, name: imageName });
@@ -84,7 +84,7 @@ export const Dashboard = () => {
       <PreviewWithZoom open={open} handleOpen={handleOpen} preview={preview} />
       {images && images.length ? (
         <>
-          <h1 className="text-center mb-4 text-lg mt-8">
+          <h1 className="text-center mb-4 text-lg sm:mt-8">
             <Translator path="dashboard.title" />
           </h1>
           <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-flow-row grid-rows-auto gap-8 bg-gray-100 p-4 m-0 overflow-y-auto h-[75%] rounded">
@@ -97,7 +97,10 @@ export const Dashboard = () => {
               />
             ))}
           </div>
-          <div id="pagination" className="float-end mt-2">
+          <div
+            id="pagination"
+            className="sm:float-end w-full sm:w-auto flex sm:block justify-between mt-2"
+          >
             <IconButton
               variant="outlined"
               className="m-2 border-gray-500 material-icon-button"
@@ -111,7 +114,7 @@ export const Dashboard = () => {
                 <Button
                   key={page}
                   variant="outlined"
-                  className="m-2 border-gray-500 material-button"
+                  className="m-2 border-gray-500 material-button hidden sm:inline-block"
                   onClick={() => {
                     loadPage(page);
                   }}
@@ -129,16 +132,6 @@ export const Dashboard = () => {
               <span className="material-symbols-outlined">chevron_right</span>
             </IconButton>
           </div>
-          <ToastContainer
-            position="bottom-right"
-            autoClose={2000}
-            hideProgressBar={true}
-            newestOnTop={false}
-            rtl={false}
-            pauseOnHover
-            theme="light"
-            transition:Flip
-          />
         </>
       ) : (
         <>

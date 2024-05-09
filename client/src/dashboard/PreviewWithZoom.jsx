@@ -7,6 +7,7 @@ import {
   DialogBody,
   IconButton,
 } from '@material-tailwind/react';
+import { toast } from 'react-toastify';
 
 import { DICOMViewer } from './DICOMViewer';
 import { isDCM } from '../helpers/Helpers';
@@ -14,7 +15,7 @@ import Translator from '../i18n/Translator';
 
 export const PreviewWithZoom = ({ open, handleOpen, preview }) => {
   return (
-    <Dialog id="preview-modal" open={open} handler={handleOpen} size="xl">
+    <Dialog id="preview-modal" open={open} handler={handleOpen} size="xxl">
       <DialogHeader className="flex flex-row justify-between content-center">
         <Translator path="preview.title" />
         <IconButton

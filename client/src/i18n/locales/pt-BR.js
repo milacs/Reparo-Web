@@ -22,7 +22,8 @@ export default {
     },
     preview: {
       title: 'Pré-visualização',
-      toast: 'Carregando imagem para pré-visualização...',
+      loadingToast: 'Carregando imagem para pré-visualização...',
+      zoomToast: 'Role para ampliar e arraste para mover',
     },
   },
 };

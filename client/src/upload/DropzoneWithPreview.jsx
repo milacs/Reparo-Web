@@ -51,7 +51,7 @@ export const DropzoneWithPreview = ({ callback }) => {
 
   return (
     <div className="flex flex-row content-center justify-center h-fit">
-      <div className="flex items-center justify-center aspect-square">
+      <div className="sm:flex items-center justify-center aspect-square hidden">
         <div {...getRootProps()}>
           <label
             htmlFor="dropzone-file"
@@ -73,11 +73,13 @@ export const DropzoneWithPreview = ({ callback }) => {
                   d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                 />
               </svg>
-              <p className="mb-2 text-sm text-gray-900 dark:text-gray-400">
+              <p className="mb-2 text-sm text-gray-900 dark:text-gray-400 flex flex-row flex-wrap justify-center">
                 <span className="font-semibold">
                   <Translator path="upload.dropzone.description.main" />
-                </span>{' '}
-                <Translator path="upload.dropzone.description.more" />
+                </span>
+                <span className="ps-1">
+                  <Translator path="upload.dropzone.description.more" />
+                </span>
               </p>
               <p className="text-xs text-gray-900 dark:text-gray-400">
                 <Translator path="upload.dropzone.description.files" />
@@ -89,11 +91,11 @@ export const DropzoneWithPreview = ({ callback }) => {
       </div>
 
       {files.length > 0 && (
-        <div className="flex flex-col ms-4 overflow-y-scroll overflow-x-hidden max-h-[60vh] max-w-[70%] px-4 grow">
+        <div className="flex flex-col pt-1 sm:ms-4 overflow-y-scroll overflow-x-hidden max-h-[60vh] sm:max-w-[70%] px-1 sm:px-4 grow">
           {files.map((file, i) => (
             <div
               key={i}
-              className="bg-gray-50 px-4 py-4 mb-4 rounded-md outline outline-1 outline-gray-200 flex flex-row justify-between content-center items-center"
+              className="bg-gray-50 px-4 py-4 mb-4 rounded-md outline outline-1 outline-gray-300 flex flex-row justify-between content-center items-center"
             >
               <div className="flex flex-col max-w-[70%]">
                 <span className="text-gray-900 whitespace-nowrap text-ellipsis overflow-hidden block">
@@ -111,7 +113,7 @@ export const DropzoneWithPreview = ({ callback }) => {
                   variant="text"
                   onClick={() => removeFile(file.name)}
                 >
-                  <span className="material-symbols-outlined">close</span>
+                  <span className="material-symbols-outlined">delete</span>
                 </IconButton>
               </div>
             </div>
