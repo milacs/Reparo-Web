@@ -2,6 +2,7 @@ import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { IconButton } from '@material-tailwind/react';
 import { PreviewWithZoom } from '../dashboard/PreviewWithZoom';
+import { getFileType, shortenFileName } from '../helpers/Helpers';
 
 export const DropzoneWithPreview = ({ callback }) => {
   const [preview, setPreview] = React.useState(null);
@@ -27,6 +28,7 @@ export const DropzoneWithPreview = ({ callback }) => {
     onDrop: onDrop,
     accept: {
       'image/tiff': ['.tiff', '.tif'],
+      'application/dicom': ['.dcm'],
     },
   });
 
@@ -35,7 +37,7 @@ export const DropzoneWithPreview = ({ callback }) => {
   const openPreview = (file) => {
     const fileb64 = new FileReader();
     fileb64.onload = function () {
-      setPreview(fileb64.result);
+      setPreview({ b64: fileb64.result, name: file.name });
       handleOpen();
     };
     fileb64.readAsDataURL(file);
@@ -46,14 +48,14 @@ export const DropzoneWithPreview = ({ callback }) => {
   };
 
   return (
-    <div className="flex flex-row content-center justify-around h-fit">
+    <div className="flex flex-row content-center justify-center h-fit">
       <div className="flex items-center justify-center aspect-square">
         <div {...getRootProps()}>
           <label
             htmlFor="dropzone-file"
             className="flex flex-col grow items-center justify-center w-auto h-[400px] border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50"
           >
-            <div className="flex flex-col grow items-center justify-center py-5 px-10">
+            <div className="flex flex-col grow items-center justify-center mx-10">
               <svg
                 className="w-8 h-8 mb-4 text-gray-500"
                 aria-hidden="true"
@@ -83,16 +85,19 @@ export const DropzoneWithPreview = ({ callback }) => {
       </div>
 
       {files.length > 0 && (
-        <div className="flex flex-col p-0">
+        <div className="flex flex-col ms-4 overflow-y-scroll overflow-x-hidden max-h-[60vh] max-w-[70%] px-4 grow">
           {files.map((file, i) => (
             <div
               key={i}
-              className="bg-gray-50 px-4 py-4 mb-4 rounded-md outline outline-1 outline-gray-200 w-80 flex flex-row justify-between content-center items-center"
+              className="bg-gray-50 px-4 py-4 mb-4 rounded-md outline outline-1 outline-gray-200 flex flex-row justify-between content-center items-center"
             >
-              <div>
-                <span className="text-gray-900">{file.name}</span>
-                <span> - </span>
-                <span>{file.type}</span>
+              <div className="flex flex-col max-w-[70%]">
+                <span className="text-gray-900 whitespace-nowrap text-ellipsis overflow-hidden block">
+                  {shortenFileName(file.name, 40)}
+                </span>
+                <span className="block overflow-hidden whitespace-nowrap text-ellipsis">
+                  {getFileType(file)}
+                </span>
               </div>
               <div className="flex flex-row justify-center content-center">
                 <IconButton variant="text" onClick={() => openPreview(file)}>
@@ -109,11 +114,7 @@ export const DropzoneWithPreview = ({ callback }) => {
           ))}
         </div>
       )}
-      <PreviewWithZoom
-        open={open}
-        handleOpen={handleOpen}
-        previewImage={preview}
-      />
+      <PreviewWithZoom open={open} handleOpen={handleOpen} preview={preview} />
     </div>
   );
 };

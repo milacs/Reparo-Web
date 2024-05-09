@@ -14,7 +14,7 @@ export const Dashboard = () => {
   const upld = React.useContext(UploadContext);
   const [images, setImages] = React.useState(null);
   const [open, setOpen] = React.useState(false);
-  const [previewImage, setPreviewImage] = React.useState(null);
+  const [preview, setPreview] = React.useState(null);
 
   React.useEffect(() => {
     if (auth.isLoggedIn() && upld.image === null) {
@@ -53,33 +53,29 @@ export const Dashboard = () => {
       toast('Loading image preview...');
       const image = await getOriginalImage(imageName);
       const timeout = setTimeout(() => {
-        setPreviewImage(image);
+        setPreview({ b64: image, name: imageName });
         setOpen(true);
         clearTimeout(timeout);
       }, 300);
     } else {
-      setPreviewImage(null);
+      setPreview(null);
       setOpen(false);
     }
   };
 
   return auth.isLoggedIn() ? (
     <>
-      <PreviewWithZoom
-        open={open}
-        handleOpen={handleOpen}
-        previewImage={previewImage}
-      />
+      <PreviewWithZoom open={open} handleOpen={handleOpen} preview={preview} />
       {images && images.length ? (
         <>
           <h1 className="text-center mb-4 text-lg mt-8">Imagens de reparos</h1>
-          <div className="flex gap-8 bg-gray-100 p-4 m-0 flex-wrap overflow-y-auto h-[75vh] rounded justify-start content-start">
+          <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-flow-row grid-rows-auto gap-8 bg-gray-100 p-4 m-0 overflow-y-auto h-[75vh] rounded">
             {images.map((image, key) => (
               <ImageThumbnail
                 key={key}
                 imageName={image}
                 onClick={handleOpen}
-                loading={previewImage !== null}
+                loading={preview !== null}
               />
             ))}
           </div>

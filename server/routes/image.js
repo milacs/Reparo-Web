@@ -1,6 +1,6 @@
 var express = require('express');
 const fs = require('fs');
-const imageThumbnail = require('image-thumbnail');
+const utils = require('../utils/utils');
 
 var router = express.Router();
 
@@ -9,15 +9,20 @@ const path = './uploads/';
 /* GET list of files. */
 router.get('/:imageName', function (req, res, next) {
   const imageName = req.params.imageName;
-  console.log('Image name: ' + imageName);
 
-  let data = 'data:image/tiff;base64,';
+  let mimeType = '';
+  if (utils.isDCM(imageName)) {
+    mimeType = 'application/dicom';
+  } else {
+    mimeType = 'image/tiff';
+  }
+  let data = 'data:' + mimeType + ';base64,';
+
   try {
     data += fs.readFileSync(path + imageName).toString('base64');
-    // const image = Buffer.from(data, 'base64');
-    // console.log('Image data: ' + data);
+
     res.writeHead(200, {
-      'Content-Type': 'image/tiff',
+      'Content-Type': mimeType,
     });
     res.end(JSON.stringify({ image: data }));
   } catch (err) {

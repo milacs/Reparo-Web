@@ -28,7 +28,6 @@ const getThumbnailFromPath = async function (file) {
 };
 
 const getThumbnailFromDCM = async function (base64) {
-  // console.log('base64: ' + base64);
   try {
     const thumbnail = `data:image/png;base64,${await imageThumbnail(base64, {
       width: 160,
@@ -49,11 +48,6 @@ const getDICOMPixelData = function (fileName) {
   var dataSet = dicomParser.parseDicom(dicomAsBuffer);
 
   var pixelData = dataSet.elements.x7fe00010;
-  var pixelDataBuffer = dicomParser.sharedCopy(
-    dicomAsBuffer,
-    pixelData.dataOffset,
-    pixelData.length,
-  );
 
   if (pixelData.encapsulatedPixelData) {
     if (pixelData.basicOffsetTable.length) {

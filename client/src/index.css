@@ -47,7 +47,7 @@ body {
   height: 24px;
 }
 
-#preview-modal #tiff-container canvas {
+#preview-modal #tiff-container canvas, #dicom-canvas {
   min-width: 600px;
   max-width: 80vh;
 }
