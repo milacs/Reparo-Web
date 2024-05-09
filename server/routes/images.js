@@ -4,18 +4,21 @@ const fs = require('fs');
 var router = express.Router();
 
 const path = './uploads/';
+const pageSize = 8;
 
 /* GET list of files. */
 router.get('/', function (req, res, next) {
   imageList = [];
+  const reqPage = parseInt(req.query.page);
+  let filesInDir = fs.readdirSync(path);
 
-  let fileList = [];
-  fs.readdirSync(path).forEach((fileName) => {
-    console.log(fileName);
-    fileList.push(fileName);
-  });
+  start = Math.max(0, pageSize * (reqPage - 1));
+  end = Math.min(pageSize * reqPage, filesInDir.length);
 
-  res.send(JSON.stringify({ images: fileList }));
+  let fileList = filesInDir.slice(start, end);
+  const pageCount = Math.ceil(filesInDir.length / pageSize);
+
+  res.send(JSON.stringify({ images: fileList, pages: pageCount }));
 });
 
 module.exports = router;
