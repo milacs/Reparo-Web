@@ -26,7 +26,7 @@ export const shortenFileName = (fileName, maxLength, includeIdx) => {
 const getFileExtension = (fileName) => {
   var re = /(?:\.([^.]+))?$/;
 
-  return re.exec(fileName)[1];
+  return re.exec(fileName)[1].toLowerCase();
 };
 
 export const getFileType = (file) => {

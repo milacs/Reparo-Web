@@ -1,7 +1,7 @@
 const getFileExtension = function (fileName) {
   var re = /(?:\.([^.]+))?$/;
 
-  return re.exec(fileName)[0];
+  return re.exec(fileName)[0].toLowerCase();
 };
 
 exports.isDCM = function (fileName) {
