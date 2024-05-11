@@ -114,7 +114,7 @@ export const Dashboard = () => {
                 <Button
                   key={page}
                   variant="outlined"
-                  className="m-2 border-gray-500 material-button hidden sm:inline-block"
+                  className={"m-2 border-gray-500 material-button sm:inline-block" + (page !== currentPage ? ' hidden' : '')}
                   onClick={() => {
                     loadPage(page);
                   }}

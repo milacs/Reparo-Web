@@ -78,11 +78,11 @@ const Toolbar = () => {
           </span>
         </div>
         {auth && auth.isLoggedIn() && (
-          <div className="flex flex-row w-fit sm:gap-5">
+          <div className="flex flex-row w-fit sm:gap-5  flex-wrap content-center">
             <Button
               onClick={handleOpen}
               variant="text"
-              className="flex items-center gap-3 font-normal text-gray-900 material-button"
+              className="flex items-center gap-3 font-normal text-gray-900 material-button py-2"
             >
               <span className="material-symbols-outlined">cloud_upload</span>
               <span className="hidden sm:block">

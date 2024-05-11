@@ -51,7 +51,7 @@ export const DropzoneWithPreview = ({ callback }) => {
 
   return (
     <div className="flex flex-row content-center justify-center h-fit">
-      <div className="sm:flex items-center justify-center aspect-square hidden">
+      <div className={"sm:flex items-center justify-center aspect-square" + ((files.length > 0) ? ' hidden' : '')}>
         <div {...getRootProps()}>
           <label
             htmlFor="dropzone-file"
